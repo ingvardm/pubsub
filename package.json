@@ -1,0 +1,8 @@
+{
+  "name": "pubsub",
+  "version": "1.0.0",
+  "description": "A simple pub - sub library",
+  "main": "index.js",
+  "author": "igor poughtach <ingvardm@gmail.com>",
+  "license": "MIT"
+}
