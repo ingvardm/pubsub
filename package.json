@@ -2,7 +2,33 @@
   "name": "pubsub",
   "version": "1.0.0",
   "description": "A simple pub - sub library",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "Publisher",
+    "Subscriber",
+    "Listener"
+  ],
   "author": "igor poughtach <ingvardm@gmail.com>",
-  "license": "MIT"
+  "license": "GPL",
+  "repository": "git@github.com:ingvardm/pubsub.git",
+  "private": false,
+  "files": [
+    "lib /**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --config jestconfig.json",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.4",
+    "jest": "^26.1.0",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.2",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.6"
+  },
+  "prepare": "npm run build",
+  "prepublishOnly": "npm test && npm run lint"
 }

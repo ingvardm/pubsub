@@ -1,9 +1,11 @@
-class PubSub {
-	subs = new Map() // stores a map of namespaces (maps of subscribers)
-	subId = 0 // used to generate unique id for each subscriber
-	releasedSubIds = [] // holds released ids of removed subscribers for reuse
+export type SubCallback = (data: any) => void
 
-	sub = (namespace, callback) => { // subscribe to messages in a namespace
+export default class PubSub {
+	private subs = new Map() // stores a map of namespaces (maps of subscribers)
+	private subId = 0 // used to generate unique id for each subscriber
+	private releasedSubIds: string[] = [] // holds released ids of removed subscribers for reuse
+
+	sub = (namespace: string, callback: SubCallback) => { // subscribe to messages in a namespace
 		if (!this.subs.has(namespace)) { // initialize new namespace
 			this.subs.set(namespace, new Map())
 		}
@@ -19,21 +21,11 @@ class PubSub {
 		}
 	}
 
-	pub = (namespace, data) => { // publish to namespace
+	pub = (namespace: string, data: any) => { // publish to namespace
 		const subsMap = this.subs.get(namespace) // map of subscribers for this namespace
 
 		if (subsMap && subsMap.size) { // if the map is not empty - call subscribers
-			subsMap.forEach(callback => callback(data))
+			subsMap.forEach((callback: SubCallback) => callback(data))
 		}
 	}
 }
-
-const myPubSub = new PubSub()
-
-const unSub = myPubSub.sub('my-event-name', console.log)
-
-myPubSub.pub('my-event-name', 'This one is printed')
-
-unSub()
-
-myPubSub.pub('my-event-name', 'This one isn\'t')
