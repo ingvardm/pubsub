@@ -10,7 +10,7 @@
     "Listener"
   ],
   "author": "igor poughtach <ingvardm@gmail.com>",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "repository": "git@github.com:ingvardm/pubsub.git",
   "private": false,
   "files": [
