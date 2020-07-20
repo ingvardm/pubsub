@@ -21,11 +21,19 @@ export default class PubSub {
 		}
 	}
 
-	pub = (namespace: string, data: any) => { // publish to namespace
+	pub = (namespace: string, data: any) => { // publish data to namespace
 		const subsMap = this.subs.get(namespace) // map of subscribers for this namespace
 
 		if (subsMap && subsMap.size) { // if the map is not empty - call subscribers
 			subsMap.forEach((callback: SubCallback) => callback(data))
 		}
 	}
+
+	// subscribe aliases
+	subscribe = this.sub
+	listen = this.sub
+
+	// publish aliases
+	publish = this.pub
+	emit = this.pub
 }
