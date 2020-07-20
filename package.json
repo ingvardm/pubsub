@@ -1,6 +1,6 @@
 {
   "name": "suby",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple pub - sub library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,7 +14,7 @@
   "repository": "git@github.com:ingvardm/pubsub.git",
   "private": false,
   "files": [
-    "lib /**/*"
+    "lib"
   ],
   "scripts": {
     "build": "tsc",
