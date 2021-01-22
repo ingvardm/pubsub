@@ -30,5 +30,8 @@
     "typescript": "^3.9.7"
   },
   "prepare": "npm run build",
-  "prepublishOnly": "npm test && npm run lint"
+  "prepublishOnly": "npm test && npm run lint",
+  "dependencies": {
+    "tslint-config-prettier": "^1.18.0"
+  }
 }
