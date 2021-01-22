@@ -10,8 +10,11 @@ $ yarn add suby
 ```
 
 # Methods
-```sub, subscribe, listen```: (namespace, callback) - subscribes to messages in a namespace and returns unsubscribe function
+```sub, subscribe, listen, on```: (namespace, callback) - subscribes to messages in a namespace and returns unsubscribe function
+
 ```pub, publish, emit```: (namespace, data) - publish data to namespace
+
+```unsub, off```: (namespace, callback) - unsubscribes from messages in a namespace
 
 
 # Usage
@@ -29,6 +32,15 @@ mySubyInstance.pub('new-user', 'John') // printts 'Hello John!'
 unSub() // unsubscribe from future events
 
 mySubyInstance.pub('new-user', 'Homer') // nothing happens
+
+// or with on/off pattern
+function onPing(){
+    console.log('PING')
+}
+
+mySubyInstance.on('ping', onPing)
+mySubyInstance.off('ping', onPing)
+
 ```
 
 # Examples
