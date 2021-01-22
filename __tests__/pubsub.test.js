@@ -52,4 +52,27 @@ describe('single', () => {
 		expect(callbackA).toHaveBeenCalledTimes(0)
 		expect(callbackB).toHaveBeenCalledTimes(0)
 	})
+
+	test('any ns subsccription', () => {
+		const eventA = 'event-a'
+		const testValueA = 'value-a'
+		const pubSub = new PubSub()
+		const callbackA = jest.fn()
+
+		const unsub = pubSub.onAny(callbackA)
+
+		pubSub.pub(eventA, testValueA)
+
+		expect(callbackA).toHaveBeenCalledTimes(1)
+		expect(callbackA).toHaveBeenCalledWith(eventA, testValueA)
+
+		callbackA.mockClear();
+
+		unsub()
+
+		pubSub.pub(eventA, testValueA)
+
+		expect(callbackA).toHaveBeenCalledTimes(0)
+
+	})
 })
