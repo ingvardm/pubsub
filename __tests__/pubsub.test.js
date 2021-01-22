@@ -16,7 +16,7 @@ describe('single', () => {
 		const pubSub = new PubSub()
 
 		const unsubA = pubSub.sub(eventA, callbackA)
-		const unsubB = pubSub.sub(eventB, callbackB)
+		pubSub.on(eventB, callbackB)
 		const unsubC = pubSub.sub(eventC, callbackC)
 
 		pubSub.pub(eventA, testValueA)
@@ -30,7 +30,7 @@ describe('single', () => {
 		expect(callbackB).toHaveBeenLastCalledWith(testValueB)
 
 		unsubA()
-		unsubB()
+		pubSub.off(eventB, callbackB)
 		unsubC()
 	})
 
@@ -39,11 +39,17 @@ describe('single', () => {
 		const testValueA = 'value-a'
 		const pubSub = new PubSub()
 		const callbackA = jest.fn()
+		const callbackB = jest.fn()
 
 		const unsub = pubSub.sub(eventA, callbackA)
+		pubSub.on(eventA, callbackB)
+
+		pubSub.off(eventA, callbackB)
 		unsub()
+
 		pubSub.pub(eventA, testValueA)
 
 		expect(callbackA).toHaveBeenCalledTimes(0)
+		expect(callbackB).toHaveBeenCalledTimes(0)
 	})
 })
