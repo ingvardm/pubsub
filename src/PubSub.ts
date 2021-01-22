@@ -30,7 +30,7 @@ export default class PubSub {
 		if (subsMap) {
 			subsMap.delete(callback) // remove subscriber
 		} else {
-			throw `There are no subscribers in ${namespace}`
+			throw new Error(`There are no subscribers in ${namespace}`)
 		}
 	}
 
