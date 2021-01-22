@@ -16,6 +16,10 @@ $ yarn add suby
 
 ```unsub, off```: (namespace, callback) - unsubscribes from messages in a namespace
 
+```onAll```: (callback) - subscribe to messages in all namespaces and returns unsubscribe function
+
+```offAll```: (calllback) - unsubscribes from messages in all namespaces
+
 
 # Usage
 ```js
@@ -27,7 +31,13 @@ const unSub = mySubyInstance.sub('new-user', (userName) => {
     console.log(`Hello ${userName}!`)
 })
 
-mySubyInstance.pub('new-user', 'John') // printts 'Hello John!'
+const offAny = mySubyInstance.onAny((event, data) => {
+    console.log('received new event', event, data)
+})
+
+mySubyInstance.pub('new-user', 'John')
+// Hello John!
+// received new event new-user John
 
 unSub() // unsubscribe from future events
 
