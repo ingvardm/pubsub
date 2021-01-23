@@ -36,10 +36,11 @@ const offAny = mySubyInstance.onAny((event, data) => {
 })
 
 mySubyInstance.pub('new-user', 'John')
-// Hello John!
 // received new event new-user John
+// Hello John!
 
-unSub() // unsubscribe from future events
+unSub() // unsubscribe from future events in 'new-user' namespace
+offAny() // unsubscribe from future events in all namespaces
 
 mySubyInstance.pub('new-user', 'Homer') // nothing happens
 
