@@ -10,15 +10,22 @@ $ yarn add suby
 ```
 
 # Methods
-```sub, subscribe, listen, on```: (namespace, callback) - subscribes to messages in a namespace and returns unsubscribe function
+```sub, subscribe, listen, on```: (namespace, callback) - subscribes to messages in a namespace and returns unsubscribe function.
 
-```pub, publish, emit```: (namespace, data) - publish data to namespace
+```pub, publish, emit```: (namespace, data) - publish data to namespace.
 
-```unsub, off```: (namespace, callback) - unsubscribes from messages in a namespace
+```unsub, off```: (namespace, callback) - unsubscribes from messages in a namespace.
 
-```onAll```: (callback) - subscribe to messages in all namespaces and returns unsubscribe function
+```onAny```: (callback) - subscribe to messages in all namespaces and returns unsubscribe function.
 
-```offAll```: (calllback) - unsubscribes from messages in all namespaces
+```offAny```: (calllback) - unsubscribes from messages in all namespaces.
+
+```hasSubscribers```: returns Boolean weather the store has registered subscribers.
+
+```registerMiddleware```: (Middleware | Middleware[]): register middleware callbacks that will be called with event name and data
+Each middleware must return original or mutated data. Next middleware and callbacks willl be called with the new data.
+
+```unregisterMiddleware```: (Middleware | Middleware[]): unregister middleware.
 
 
 # Usage
@@ -43,6 +50,17 @@ unSub() // unsubscribe from future events in 'new-user' namespace
 offAny() // unsubscribe from future events in all namespaces
 
 mySubyInstance.pub('new-user', 'Homer') // nothing happens
+
+//using middleware
+function myLoggerMiddleware(event, data){
+    console.log(`Logger`, event, data)
+    return data // return data!
+}
+
+mySubyInstance.registerMiddleware(myLoggerMiddleware)
+
+mySubyInstance.pub('new-user', 'Bob')
+// Logger new-user Bob
 
 // or with on/off pattern
 function onPing(){
