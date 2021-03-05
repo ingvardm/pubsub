@@ -31,7 +31,12 @@ describe('single', () => {
 
 		unsubA()
 		pubSub.off(eventB, callbackB)
+
+		expect(pubSub.hasSubscribers()).toEqual(true)
+
 		unsubC()
+
+		expect(pubSub.hasSubscribers()).toEqual(false)
 	})
 
 	test('unsunscribe', () => {

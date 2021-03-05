@@ -29,6 +29,10 @@ export default class PubSub {
 
 		if (subsMap) {
 			subsMap.delete(callback) // remove subscriber
+
+			if (subsMap.size < 1) { // clear namespace
+				this.subs.delete(namespace)
+			}
 		} else {
 			throw new Error(`There are no subscribers in ${namespace}`)
 		}
@@ -57,6 +61,8 @@ export default class PubSub {
 	offAny = (callback: AnySubCallback) => {
 		this.anySubs.delete(callback)
 	}
+
+	hasSubscribers = () => this.subs.size > 0
 
 	// subscribe aliases
 	subscribe = this.sub
