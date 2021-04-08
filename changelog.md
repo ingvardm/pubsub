@@ -1,3 +1,9 @@
+### 1.2.1 -> 1.2.2
+* Fixed types export
+```js
+import { Middleware, AnySubCallback, ... } from 'suby'
+```
+
 ### 1.2.0 -> 1.2.1
 * Fixed jest y18n vulnerability
 
