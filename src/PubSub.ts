@@ -81,7 +81,7 @@ export default class PubSub {
 		this.anySubs.delete(callback)
 	}
 
-	hasSubscribers = () => this.subs.size > 0
+	hasSubscribers = () => this.subs.size + this.anySubs.size > 0
 
 	registerMiddleware = (middleware: Middleware | Middleware[]) => {
 		if (Array.isArray(middleware)) {

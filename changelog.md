@@ -1,3 +1,6 @@
+### 1.2.2 -> 1.2.3
+* Fixed ```hasSubscribers```, should now return correct value
+
 ### 1.2.1 -> 1.2.2
 * Fixed types export
 ```js

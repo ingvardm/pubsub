@@ -73,11 +73,14 @@ describe('single', () => {
 
 		callbackA.mockClear();
 
+		expect(pubSub.hasSubscribers()).toEqual(true)
+
 		unsub()
+
+		expect(pubSub.hasSubscribers()).toEqual(false)
 
 		pubSub.pub(eventA, testValueA)
 
 		expect(callbackA).toHaveBeenCalledTimes(0)
-
 	})
 })
