@@ -1,6 +1,6 @@
 {
   "name": "suby",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A simple pub - sub library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -24,7 +24,9 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --config jestconfig.json",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
@@ -35,7 +37,5 @@
     "typescript": "^3.9.7",
     "tslint-config-prettier": "^1.18.0"
   },
-  "prepare": "npm run build",
-  "prepublishOnly": "npm test && npm run lint",
   "dependencies": {}
 }
