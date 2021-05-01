@@ -7,11 +7,16 @@
   "keywords": [
     "Publisher",
     "Subscriber",
-    "Listener"
+    "Listener",
+    "Emmiter",
+    "Events"
   ],
   "author": "igor poughtach <ingvardm@gmail.com>",
   "license": "GPL-3.0",
-  "repository": "git@github.com:ingvardm/pubsub.git",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ingvardm/pubsub.git"
+  },
   "private": false,
   "files": [
     "lib"

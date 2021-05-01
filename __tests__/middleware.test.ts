@@ -1,8 +1,8 @@
-const PubSub = require('../src').default
+import PubSub, { Middleware } from '../src'
 
-const mw1 = (_, v) => `${v}a`
-const mw2 = (_, v) => `${v}b`
-const mw3 = (_, v) => `${v}c`
+const mw1: Middleware = (_, v) => `${v}a`
+const mw2: Middleware = (_, v) => `${v}b`
+const mw3: Middleware = (_, v) => `${v}c`
 
 describe('Middleware tests', () => {
 	test('middlleware registration', () => {

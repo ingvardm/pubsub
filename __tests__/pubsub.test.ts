@@ -1,4 +1,4 @@
-const PubSub = require('../src').default
+import PubSub from '../src'
 
 describe('single', () => {
 	test('sunscribe', () => {
