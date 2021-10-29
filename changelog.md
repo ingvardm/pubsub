@@ -1,3 +1,9 @@
+### 1.2.4 -> 1.2.5
+* Added event type. e.g.: ```const pubsub = new PubSub<'event' | 'otherEvent'>()```
+
+### 1.2.3 -> 1.2.4
+* Passing data object in events is not required anymore
+
 ### 1.2.2 -> 1.2.3
 * Fixed ```hasSubscribers```, should now return correct value
 

@@ -1,5 +1,4 @@
 import {
-	NS,
 	NSSubCallback,
 	AnySubCallback,
 	NSSubsMap,
@@ -8,12 +7,12 @@ import {
 	MiddlewareSet,
 } from './types'
 
-export default class PubSub {
-	private subs: NSSubsMap = new Map() // stores a map of namespaces (maps of subscribers)
-	private anySubs: AnySubsSet = new Set() // stores a set of subscribers for any namespace
-	private middleware: MiddlewareSet = new Set() // stores a set of middleware callbacks
+export default class PubSub<NS = string, T = any> {
+	private subs: NSSubsMap<NS, T> = new Map() // stores a map of namespaces (maps of subscribers)
+	private anySubs: AnySubsSet<NS, T> = new Set() // stores a set of subscribers for any namespace
+	private middleware: MiddlewareSet<NS, T> = new Set() // stores a set of middleware callbacks
 
-	protected runMiddleware = (namespace: NS, data: any) => {
+	protected runMiddleware = (namespace: NS, data?: T) => {
 		let transformedData = data;
 
 		this.middleware.forEach(mw => {
@@ -27,15 +26,15 @@ export default class PubSub {
 		const subsMap = this.subs.get(namespace) // map of subscribers for this namespace
 
 		if (this.anySubs.size > 0) { // call subscribers for any namespace
-			this.anySubs.forEach((callback: AnySubCallback) => callback(namespace, data))
+			this.anySubs.forEach((callback: AnySubCallback<NS, T>) => callback(namespace, data))
 		}
 
 		if (subsMap && subsMap.size > 0) { // if the map is not empty - call subscribers
-			subsMap.forEach((callback: NSSubCallback) => callback(data))
+			subsMap.forEach((callback: NSSubCallback<T>) => callback(data))
 		}
 	}
 
-	sub = (namespace: NS, callback: NSSubCallback) => { // subscribe to messages in a namespace
+	sub = (namespace: NS, callback: NSSubCallback<T>) => { // subscribe to messages in a namespace
 		if (!this.subs.has(namespace)) { // initialize new namespace
 			this.subs.set(namespace, new Set())
 		}
@@ -49,7 +48,7 @@ export default class PubSub {
 		}
 	}
 
-	unsub = (namespace: NS, callback: NSSubCallback) => {
+	unsub = (namespace: NS, callback: NSSubCallback<T>) => {
 		const subsMap = this.subs.get(namespace) // map of subscribers for this namespace
 
 		if (subsMap) {
@@ -63,13 +62,13 @@ export default class PubSub {
 		}
 	}
 
-	pub = (namespace: NS, data?: any) => { // publish data to namespace
+	pub = (namespace: NS, data?: T) => { // publish data to namespace
 		const transformedData = this.runMiddleware(namespace, data)
 
 		this.updateSubscribers(namespace, transformedData)
 	}
 
-	onAny = (callback: AnySubCallback) => {
+	onAny = (callback: AnySubCallback<NS, T>) => {
 		this.anySubs.add(callback)
 
 		return () => {
@@ -77,13 +76,13 @@ export default class PubSub {
 		}
 	}
 
-	offAny = (callback: AnySubCallback) => {
+	offAny = (callback: AnySubCallback<NS, T>) => {
 		this.anySubs.delete(callback)
 	}
 
 	hasSubscribers = () => this.subs.size + this.anySubs.size > 0
 
-	registerMiddleware = (middleware: Middleware | Middleware[]) => {
+	registerMiddleware = (middleware: Middleware<NS, T> | Middleware<NS, T>[]) => {
 		if (Array.isArray(middleware)) {
 			middleware.forEach(mw => {
 				this.middleware.add(mw)
@@ -97,7 +96,7 @@ export default class PubSub {
 		}
 	}
 
-	unregisterMiddleware = (middleware: Middleware | Middleware[]) => {
+	unregisterMiddleware = (middleware: Middleware<NS, T> | Middleware<NS, T>[]) => {
 		if (Array.isArray(middleware)) {
 			middleware.forEach(mw => {
 				this.middleware.delete(mw)
