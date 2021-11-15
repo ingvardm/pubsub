@@ -12,7 +12,7 @@ $ yarn add suby
 # Methods
 ```sub, subscribe, listen, on```: (namespace, callback) - subscribes to messages in a namespace and returns unsubscribe function.
 
-```pub, publish, emit```: (namespace, data) - publish data to namespace.
+```pub, publish, emit```: (namespace, data?) - publish data to namespace.
 
 ```unsub, off```: (namespace, callback) - unsubscribes from messages in a namespace.
 
@@ -22,11 +22,12 @@ $ yarn add suby
 
 ```hasSubscribers```: returns Boolean weather the store has registered subscribers.
 
+```hasSubscriber```: (namespace, callback?) - returns Boolean weather there are subscribers or specific subscriber in provided namespace.
+
 ```registerMiddleware```: (Middleware | Middleware[]): register middleware callbacks that will be called with event name and data
 Each middleware must return original or mutated data. Next middleware and callbacks willl be called with the new data.
 
 ```unregisterMiddleware```: (Middleware | Middleware[]): unregister middleware.
-
 
 # Usage
 ```js
