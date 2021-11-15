@@ -82,6 +82,18 @@ export default class PubSub<NS = string, T = any> {
 
 	hasSubscribers = () => this.subs.size + this.anySubs.size > 0
 
+	hasSubscriber = (namespace: NS, callback: NSSubCallback<T> | null = null) => {
+		const nsSubs = this.subs.get(namespace)
+
+		if(!nsSubs) return false
+		
+		if(callback){
+			return nsSubs.has(callback)
+		}
+
+		return true
+	}
+
 	registerMiddleware = (middleware: Middleware<NS, T> | Middleware<NS, T>[]) => {
 		if (Array.isArray(middleware)) {
 			middleware.forEach(mw => {
