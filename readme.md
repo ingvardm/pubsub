@@ -83,3 +83,15 @@ const unSub = eventBus.sub('assets-loaded', (error) => {
     // do some stuff...
 })
 ```
+
+```ts
+type Events = {
+	'event-a': string
+	'event-b': number
+	'event-c': undefined
+}
+
+const pubSub = new PubSub<Events>()
+
+pubSub.on('event-a', 'hello')
+```

@@ -1,40 +1,42 @@
-import PubSub, { Middleware } from '../src'
+import PubSub from '../src'
 
-const mw1: Middleware = (_, v) => `${v}a`
-const mw2: Middleware = (_, v) => `${v}b`
-const mw3: Middleware = (_, v) => `${v}c`
+type Events = {
+	'test-event': string
+}
+
+const mw1 = (_: keyof Events, v: string) => `${v}a`
+const mw2 = (_: keyof Events, v: string) => `${v}b`
+const mw3 = (_: keyof Events, v: string) => `${v}c`
 
 describe('Middleware tests', () => {
 	test('middlleware registration', () => {
-		const pubSub = new PubSub()
-		const eventName = 'test-event'
+		const pubSub = new PubSub<Events>()
 		const initialTestVal = 'test-value'
 		const callback = jest.fn()
 
 		pubSub.registerMiddleware([mw1, mw2])
 		pubSub.onAny(callback)
 
-		pubSub.emit(eventName, initialTestVal)
+		pubSub.emit('test-event', initialTestVal)
 
-		const expectedVal1 = mw2(eventName, mw1(eventName, initialTestVal))
+		const expectedVal1 = mw2('test-event', mw1('test-event', initialTestVal))
 
 		expect(callback).toBeCalledTimes(1)
-		expect(callback).toHaveBeenLastCalledWith(eventName, expectedVal1)
+		expect(callback).toHaveBeenLastCalledWith('test-event', expectedVal1)
 
 		callback.mockReset()
 
 		pubSub.registerMiddleware(mw3)
-		pubSub.emit(eventName, expectedVal1)
+		pubSub.emit('test-event', expectedVal1)
 
-		const expectedVal2 = mw3(eventName, mw2(eventName, mw1(eventName, expectedVal1)))
+		const expectedVal2 = mw3('test-event', mw2('test-event', mw1('test-event', expectedVal1)))
 
 		expect(callback).toBeCalledTimes(1)
-		expect(callback).toHaveBeenLastCalledWith(eventName, expectedVal2)
+		expect(callback).toHaveBeenLastCalledWith('test-event', expectedVal2)
 	})
 
 	test('middleware removal', () => {
-		const pubSub = new PubSub()
-		const eventName = 'test-event'
+		const pubSub = new PubSub<Events>()
 		const initialTestVal = 'test-value'
 		const callback = jest.fn()
 		const unregisterAll = pubSub.registerMiddleware([mw1, mw2, mw3])
@@ -42,19 +44,19 @@ describe('Middleware tests', () => {
 		pubSub.unregisterMiddleware(mw2)
 		pubSub.onAny(callback)
 
-		pubSub.emit(eventName, initialTestVal)
+		pubSub.emit('test-event', initialTestVal)
 
-		const expectedVal1 = mw3(eventName, mw1(eventName, initialTestVal))
+		const expectedVal1 = mw3('test-event', mw1('test-event', initialTestVal))
 
 		expect(callback).toBeCalledTimes(1)
-		expect(callback).toHaveBeenLastCalledWith(eventName, expectedVal1)
+		expect(callback).toHaveBeenLastCalledWith('test-event', expectedVal1)
 
 		callback.mockReset()
 		unregisterAll()
 
-		pubSub.emit(eventName, initialTestVal)
+		pubSub.emit('test-event', initialTestVal)
 
 		expect(callback).toBeCalledTimes(1)
-		expect(callback).toHaveBeenLastCalledWith(eventName, initialTestVal)
+		expect(callback).toHaveBeenLastCalledWith('test-event', initialTestVal)
 	})
 })

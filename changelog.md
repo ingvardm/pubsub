@@ -1,3 +1,13 @@
+### 1.2.5 -> 1.2.7
+* Fixed event types
+```ts
+new PubSub<{
+	someEvent: number
+	someOtherEvent: string
+	noDataEvent: undefined
+}>()
+```
+
 ### 1.2.4 -> 1.2.5
 * Added event type. e.g.: ```const pubsub = new PubSub<'event' | 'otherEvent'>()```
 

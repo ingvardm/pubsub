@@ -1,26 +1,28 @@
 import PubSub from '../src'
 
+type Events = {
+	'event-a': string
+	'event-b': number
+	'event-c': undefined
+}
+
 describe('single', () => {
 	test('sunscribe', () => {
-		const eventA = 'event-a'
-		const eventB = 'event-b'
-		const eventC = 'event-c'
-
 		const testValueA = 'value-a'
-		const testValueB = 'value-b'
+		const testValueB = 1
 
 		const callbackA = jest.fn()
 		const callbackB = jest.fn()
 		const callbackC = jest.fn()
 
-		const pubSub = new PubSub()
+		const pubSub = new PubSub<Events>()
 
-		const unsubA = pubSub.sub(eventA, callbackA)
-		pubSub.on(eventB, callbackB)
-		const unsubC = pubSub.sub(eventC, callbackC)
+		const unsubA = pubSub.sub('event-a', callbackA)
+		pubSub.on('event-b', callbackB)
+		const unsubC = pubSub.sub('event-c', callbackC)
 
-		pubSub.pub(eventA, testValueA)
-		pubSub.pub(eventB, testValueB)
+		pubSub.pub('event-a', testValueA)
+		pubSub.pub('event-b', testValueB)
 
 		expect(callbackA).toHaveBeenCalledTimes(1)
 		expect(callbackB).toHaveBeenCalledTimes(1)
@@ -30,7 +32,7 @@ describe('single', () => {
 		expect(callbackB).toHaveBeenLastCalledWith(testValueB)
 
 		unsubA()
-		pubSub.off(eventB, callbackB)
+		pubSub.off('event-b', callbackB)
 
 		expect(pubSub.hasSubscribers()).toEqual(true)
 
@@ -40,38 +42,35 @@ describe('single', () => {
 	})
 
 	test('unsunscribe', () => {
-		const eventA = 'event-a'
-		const testValueA = 'value-a'
-		const pubSub = new PubSub()
+		const pubSub = new PubSub<Events>()
 		const callbackA = jest.fn()
 		const callbackB = jest.fn()
 
-		const unsub = pubSub.sub(eventA, callbackA)
-		pubSub.on(eventA, callbackB)
+		const unsub = pubSub.sub('event-a', callbackA)
+		pubSub.on('event-a', callbackB)
 
-		pubSub.off(eventA, callbackB)
+		pubSub.off('event-a', callbackB)
 		unsub()
 
-		pubSub.pub(eventA, testValueA)
+		pubSub.pub('event-a', '')
 
 		expect(callbackA).toHaveBeenCalledTimes(0)
 		expect(callbackB).toHaveBeenCalledTimes(0)
 	})
 
 	test('any ns subsccription', () => {
-		const eventA = 'event-a'
 		const testValueA = 'value-a'
-		const pubSub = new PubSub()
+		const pubSub = new PubSub<Events>()
 		const callbackA = jest.fn()
 
 		const unsub = pubSub.onAny(callbackA)
 
-		pubSub.pub(eventA, testValueA)
+		pubSub.pub('event-a', testValueA)
 
 		expect(callbackA).toHaveBeenCalledTimes(1)
-		expect(callbackA).toHaveBeenCalledWith(eventA, testValueA)
+		expect(callbackA).toHaveBeenCalledWith('event-a', testValueA)
 
-		callbackA.mockClear();
+		callbackA.mockClear()
 
 		expect(pubSub.hasSubscribers()).toEqual(true)
 
@@ -79,7 +78,7 @@ describe('single', () => {
 
 		expect(pubSub.hasSubscribers()).toEqual(false)
 
-		pubSub.pub(eventA, testValueA)
+		pubSub.pub('event-a', testValueA)
 
 		expect(callbackA).toHaveBeenCalledTimes(0)
 	})
